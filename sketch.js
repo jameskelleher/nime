@@ -48,7 +48,7 @@ function draw() {
   fill(255, 255, 0);
   circle(fingerX, fingerY, 20);
   fill(255, 0, 0);
-  circle(thumbX, thumbY, 20);
+  // circle(thumbX, thumbY, 20);
 
   fingerX = floor(fingerX);
   fingerY = floor(fingerY);
