@@ -3,13 +3,14 @@ let img;
 let handPose;
 let hands = [];
 let osc1, osc2, osc3;
-let filter;
+let fltr;
 let tremolo;
 let gain;
 let lfo;
 let q = 2;
 let defaultDuration = 200;
 let duration;
+let fundamental = 440;
 
 async function setup() {
   img = await loadImage("assets/seurat.jpg");
@@ -26,12 +27,12 @@ async function setup() {
 
 
   lfo = new Tone.LFO(2, 0, 1).start();
-  filter = new Tone.Filter(2000, "lowpass").toDestination();
-  gain = new Tone.Gain(1).connect(filter);
+  fltr = new Tone.Filter(2000, "lowpass").toDestination();
+  gain = new Tone.Gain(1).connect(fltr);
   // gain = new Tone.Gain(1).toDestination();
-  osc1 = new Tone.Oscillator(440, "square").connect(gain);
-  osc2 = new Tone.Oscillator(440, "square").connect(gain);
-  osc3 = new Tone.Oscillator(440, "square").connect(gain);
+  osc1 = new Tone.Oscillator(fundamental, "square").connect(gain);
+  osc2 = new Tone.Oscillator(fundamental, "square").connect(gain);
+  osc3 = new Tone.Oscillator(fundamental, "square").connect(gain);
   lfo.connect(gain.gain);
 
   img.loadPixels();
@@ -74,7 +75,6 @@ function draw() {
   fingerY = floor(fingerY);
 
   let scaleRatios = [1, 6/5, 4/3, 3/2, 9/5];
-  let fundamental = 440;
 
   let colors = samplePixels(fingerX, fingerY, 5);
 
@@ -93,6 +93,7 @@ function draw() {
   let freq = fundamental * scaleRatios[ix] * pow(2, octavePow);
   osc1.frequency.value = freq;
   osc2.frequency.value = freq * 3/2;
+  osc3.frequency.value = fundamental;
 
   // filter.Q.value = q;
   // filter.frequency.value = lerp(map(sampleBright, 0, 100, 1000, 2000), filter.frequency.value, 0.1);
